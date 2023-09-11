@@ -19,12 +19,19 @@ jobs:
         with:
           username: itodouble
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Set time zone
+        run: echo "TZ=Asia/Shanghai" >> $GITHUB_ENV
+      - name: Get current date
+        id: get_date_now
+        run: echo "::set-output name=date_now::$(date +'%Y-%m-%d')"
       - name: Build and push
         uses: docker/build-push-action@v3
+        env:
+          DATE_NOW: ${{ steps.get_date_now.outputs.date_now }}
         with:
           context: ./openvino/Dockerfile
           platforms: linux/amd64
           push: true
           tags: |
             itodouble/mt-photos-ai:openvino-latest
-            itodouble/mt-photos-ai:openvino-$(date +%s)
+            itodouble/mt-photos-ai:openvino-${{ env.DATE_NOW }}
