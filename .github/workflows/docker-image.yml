@@ -31,7 +31,7 @@ jobs:
         env:
           DATE_NOW: ${{ steps.get_date_now.outputs.date_now }}
         with:
-          context: ./openvino/Dockerfile
+          context: ./openvino
           platforms: linux/amd64
           push: true
           tags: |
