@@ -1,0 +1,30 @@
+name: Docker Image CI
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v4
+        with:
+          repository: 'MT-Photos/mt-photos-ai'
+          ref: 'master'
+      - name: Login to Docker hub
+        uses: docker/login-action@v2
+        with:
+          username: itodouble
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: ./openvino/Dockerfile
+          platforms: linux/amd64
+          push: true
+          tags: |
+            itodouble/mt-photos-ai:openvino-latest
+            itodouble/mt-photos-ai:openvino-$(date +%s)
