@@ -14,6 +14,8 @@ jobs:
         with:
           repository: 'MT-Photos/mt-photos-ai'
           ref: 'master'
+      - name: Output directory structure
+        run: tree
       - name: Login to Docker hub
         uses: docker/login-action@v2
         with:
